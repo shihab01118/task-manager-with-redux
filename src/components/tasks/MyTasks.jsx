@@ -3,11 +3,16 @@ import {
   DocumentMagnifyingGlassIcon,
 } from "@heroicons/react/24/outline";
 import { useDispatch, useSelector } from "react-redux";
-import { completeTask } from "../../redux/features/user/userSlice";
-import { useEffect } from "react";
-import { setUserTasks } from "../../redux/features/tasks/tasksSlice";
+import { useEffect, useState } from "react";
+import {
+  setUserTasks,
+  updateStatus,
+} from "../../redux/features/tasks/tasksSlice";
+import TaskDetailsModal from "./TaskDetailsModal";
 
 const MyTasks = () => {
+  const [isOpen, setIsOpen] = useState(false);
+  const [taskId, setTaskId] = useState(0);
   const dispatch = useDispatch();
   const { tasks, userTasks } = useSelector((state) => state.tasksSlice);
   const { name } = useSelector((state) => state.userSlice);
@@ -15,6 +20,11 @@ const MyTasks = () => {
   useEffect(() => {
     dispatch(setUserTasks(name));
   }, [name, dispatch, tasks]);
+
+  const handleModalDetails = (id) => {
+    setTaskId(id);
+    setIsOpen(!isOpen);
+  }
 
   return (
     <div>
@@ -27,11 +37,17 @@ const MyTasks = () => {
           >
             <h1>{item.title}</h1>
             <div className="flex gap-3">
-              <button className="grid place-content-center" title="Details">
+              <button
+                onClick={() => handleModalDetails(item?.id)}
+                className="grid place-content-center"
+                title="Details"
+              >
                 <DocumentMagnifyingGlassIcon className="w-5 h-5 text-primary" />
               </button>
               <button
-                onClick={() => dispatch(completeTask(item.id))}
+                onClick={() =>
+                  dispatch(updateStatus({ id: item.id, status: "completed" }))
+                }
                 className="grid place-content-center"
                 title="Done"
               >
@@ -41,6 +57,7 @@ const MyTasks = () => {
           </div>
         ))}
       </div>
+      <TaskDetailsModal isOpen={isOpen} setIsOpen={setIsOpen} taskId={taskId}  />
     </div>
   );
 };

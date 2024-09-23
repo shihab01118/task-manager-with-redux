@@ -9,14 +9,9 @@ const initialState = {
 const userSlice = createSlice({
   name: "userSlice",
   initialState,
-  reducers: {
-    completeTask: (state, { payload }) => {
-      const target = state.taskList.find((task) => task.id === payload);
-      target.status = "completed";
-    },
-  },
+  reducers: {},
 });
 
-export const { completeTask } = userSlice.actions;
+export const { completeTask, setTasks } = userSlice.actions;
 
 export default userSlice.reducer;
