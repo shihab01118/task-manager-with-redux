@@ -1,87 +1,108 @@
-import { useForm } from "react-hook-form";
-import Modal from "../ui/Modal";
-import { useDispatch } from "react-redux";
-import { addTask } from "../../redux/features/tasks/tasksSlice";
+import { useForm } from 'react-hook-form';
+import Modal from '../ui/Modal';
+import { useDispatch } from 'react-redux';
+import { addTask } from '../../redux/features/tasks/tasksSlice';
 
 const AddTaskModal = ({ isOpen, setIsOpen }) => {
   const { register, handleSubmit, reset } = useForm();
   const dispatch = useDispatch();
 
-  const handleCancel = () => {
+  const onCancel = () => {
     reset();
     setIsOpen(false);
   };
 
   const onSubmit = (data) => {
     dispatch(addTask(data));
-    handleCancel();
+    onCancel();
   };
 
   return (
-    <Modal isOpen={isOpen} setIsOpen={setIsOpen} title="Add New Task">
-      <form onSubmit={handleSubmit(onSubmit)} className="mt-4">
-        <div className="flex flex-col gap-2 mb-4">
-          <label htmlFor="title">Title</label>
+    <Modal isOpen={isOpen} setIsOpen={setIsOpen} title="Programming Hero">
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <div className="flex flex-col mb-5">
+          <label htmlFor="title" className="mb-2">
+            Title
+          </label>
           <input
+            className="w-full rounded-md"
             type="text"
             id="title"
-            className="rounded-md"
-            {...register("title", { required: true })}
+            {...register('title')}
           />
         </div>
-        <div className="flex flex-col gap-2 mb-4">
-          <label htmlFor="description">Description</label>
+        <div className="flex flex-col mb-5">
+          <label htmlFor="title" className="mb-2">
+            Description
+          </label>
           <textarea
+            className="w-full rounded-md"
             type="text"
             id="description"
-            className="rounded-md"
-            {...register("description", { required: true })}
-          ></textarea>
-        </div>
-        <div className="flex flex-col gap-2 mb-4">
-          <label htmlFor="date">Deadline</label>
-          <input
-            type="date"
-            id="date"
-            className="rounded-md"
-            {...register("deadline", { required: true })}
+            {...register('description')}
           />
         </div>
-        <div className="flex flex-col gap-2 mb-4">
-          <label htmlFor="assign-to">Assign To</label>
+        <div className="flex flex-col mb-5">
+          <label htmlFor="title" className="mb-2">
+            Deadline
+          </label>
+          <input
+            className="w-full rounded-md"
+            type="date"
+            id="date"
+            {...register('date')}
+          />
+        </div>
+        <div className="flex flex-col mb-5">
+          <label htmlFor="title" className="mb-2">
+            Assign to
+          </label>
           <select
-            id="assign-to"
-            className="rounded-md"
-            {...register("assignedTo", { required: true })}
+            className="w-full rounded-md"
+            id="assignedTo"
+            {...register('assignedTo')}
           >
-            <option value="Shahed Al Amin Shihab">Shahed Al Amin Shihab</option>
-            <option value="Maisha Tabassum Oishi">Maisha Tabassum Oishi</option>
-            <option value="Atik Shahriar">Atik Shahriar</option>
-            <option value="Faysal Neowaz">Faysal Neowaz</option>
+            <option value="Mir Hussain">Mir Hussain</option>
+            <option value="Mezba Abedin">Mezba Abedin</option>
+            <option value="Nahid Hasan">Nahid Hasan</option>
+            <option value="Mizanur Rahman">Mizanur Rahman</option>
+            <option value="Tanmoy Parvez">Tanmoy Parvez</option>
+            <option value="Fahim Ahmed Firoz">Fahim Ahmed Firoz</option>
+            <option value="Rahatul Islam">Rahatul Islam</option>
+            <option value="Samin Israr Ravi">Samin Israr Ravi</option>
+            <option value="Mehedi Anik">Mehedi Anik</option>
+            <option value="Ehtisam Haq">Ehtisam Haq</option>
+            <option value="Anisur Rahman">Anisur Rahman</option>
+            <option value="Muktadir Hasan">Muktadir Hasan</option>
+            <option value="Masud Alam">Masud Alam</option>
           </select>
         </div>
-        <div className="flex flex-col gap-2 mb-4">
-          <label htmlFor="priority">Priority</label>
+        <div className="flex flex-col mb-5">
+          <label htmlFor="title" className="mb-2">
+            Priority
+          </label>
           <select
+            className="w-full rounded-md"
             id="priority"
-            className="rounded-md"
-            {...register("priority", { required: true })}
+            {...register('priority')}
           >
-            <option value="high">High</option>
+            <option defaultValue value="high">
+              High
+            </option>
             <option value="medium">Medium</option>
             <option value="low">Low</option>
           </select>
         </div>
-        <div className="flex justify-end gap-3">
+        <div className="flex gap-3 justify-end">
           <button
+            onClick={() => onCancel()}
             type="button"
-            onClick={() => handleCancel()}
-            className="btn btn-danger"
+            className="btn btn-danger "
           >
             Cancel
           </button>
-          <button type="submit" className="btn btn-primary">
-            Submit
+          <button type="submit" className="btn btn-primary ">
+            submit
           </button>
         </div>
       </form>

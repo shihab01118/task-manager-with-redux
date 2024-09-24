@@ -1,36 +1,36 @@
 import {
   CheckIcon,
   DocumentMagnifyingGlassIcon,
-} from "@heroicons/react/24/outline";
-import { useDispatch, useSelector } from "react-redux";
-import { useEffect, useState } from "react";
-import {
-  setUserTasks,
-  updateStatus,
-} from "../../redux/features/tasks/tasksSlice";
-import TaskDetailsModal from "./TaskDetailsModal";
+} from '@heroicons/react/24/outline';
+import { useEffect, useState } from 'react';
+
+import { useDispatch, useSelector } from 'react-redux';
+import TaskDetailsModal from './TaskDetailsModal';
+import { updateStatus, userTasks } from '../../redux/features/tasks/tasksSlice';
 
 const MyTasks = () => {
+  const { tasks, userSpecificTasks } = useSelector((state) => state.tasksSlice);
+  const { name } = useSelector((state) => state.userSlice);
   const [isOpen, setIsOpen] = useState(false);
   const [taskId, setTaskId] = useState(0);
+
   const dispatch = useDispatch();
-  const { tasks, userTasks } = useSelector((state) => state.tasksSlice);
-  const { name } = useSelector((state) => state.userSlice);
 
   useEffect(() => {
-    dispatch(setUserTasks(name));
-  }, [name, dispatch, tasks]);
+    dispatch(userTasks(name));
+  }, [dispatch, name, tasks]);
 
-  const handleModalDetails = (id) => {
+  const handleDetails = (id) => {
     setTaskId(id);
     setIsOpen(!isOpen);
-  }
+  };
 
   return (
     <div>
+      <TaskDetailsModal isOpen={isOpen} setIsOpen={setIsOpen} taskId={taskId} />
       <h1 className="text-xl my-3">My Tasks</h1>
       <div className=" h-[750px] overflow-auto space-y-3">
-        {userTasks?.map((item) => (
+        {userSpecificTasks?.map((item) => (
           <div
             key={item.id}
             className="bg-secondary/10 rounded-md p-3 flex justify-between"
@@ -38,7 +38,7 @@ const MyTasks = () => {
             <h1>{item.title}</h1>
             <div className="flex gap-3">
               <button
-                onClick={() => handleModalDetails(item?.id)}
+                onClick={() => handleDetails(item.id)}
                 className="grid place-content-center"
                 title="Details"
               >
@@ -46,7 +46,7 @@ const MyTasks = () => {
               </button>
               <button
                 onClick={() =>
-                  dispatch(updateStatus({ id: item.id, status: "completed" }))
+                  dispatch(updateStatus({ id: item.id, status: 'done' }))
                 }
                 className="grid place-content-center"
                 title="Done"
@@ -57,7 +57,6 @@ const MyTasks = () => {
           </div>
         ))}
       </div>
-      <TaskDetailsModal isOpen={isOpen} setIsOpen={setIsOpen} taskId={taskId}  />
     </div>
   );
 };
